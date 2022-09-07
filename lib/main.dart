@@ -7,40 +7,39 @@ const String api_key = 'a5d01b4d751380e044e2246e605df108';
 void main() {
   runApp(
     MaterialApp(
-      theme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(),
       routes: {
         '/': (context) => StartPage(),
-        '/searchResult' : (context) => SearchResultPage(),
-        // '/details': (context) => DetailPage()
+        '/searchResult': (context) => SearchResultPage(),
+        '/searchResult/detail': (context) => DetailPage()
       },
     ),
   );
 }
 
-
-class StartPage extends StatefulWidget{
+class StartPage extends StatefulWidget {
   @override
   StartPageState createState() => StartPageState();
 }
 
-
-class StartPageState extends State<StartPage>{
+class StartPageState extends State<StartPage> {
   TextEditingController controller = TextEditingController();
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Center(
           child: _buildSearchArea(context),
-          ),
         ),
+      ),
     );
   }
 
   // Build ...
 
-  Widget _buildSearchArea(BuildContext context){
+  Widget _buildSearchArea(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -66,37 +65,37 @@ class StartPageState extends State<StartPage>{
 
   // Actions ...
 
-  void _search(String movieTitle){
+  void _search(String movieTitle) {
     Navigator.pushNamed(
       context,
       '/searchResult',
-      arguments: movieTitle
+      arguments: movieTitle,
     );
   }
 }
 
-
-class SearchResultPage extends StatelessWidget{
-  
+class SearchResultPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     // we assume the argument is never null and get the data (search result)
     String movieTitle = ModalRoute.of(context)!.settings.arguments as String;
-    Future<http.Response> futureData = http.get(Uri.parse('https://api.themoviedb.org/3/search/movie?api_key=$api_key&query="$movieTitle"'));
+    Future<http.Response> futureData = http.get(Uri.parse(
+        'https://api.themoviedb.org/3/search/movie?api_key=$api_key&query="$movieTitle"'));
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: FutureBuilder(
             future: futureData,
-            builder: (BuildContext context, AsyncSnapshot<http.Response> snapshot){
-              if(snapshot.hasData){
+            builder:
+                (BuildContext context, AsyncSnapshot<http.Response> snapshot) {
+              if (snapshot.hasData) {
                 Map<String, dynamic> data = json.decode(snapshot.data!.body);
                 return buildGridView(data);
-              } else if(snapshot.hasError){
+              } else if (snapshot.hasError) {
                 return Center(
                   child: Text(
-                      'Oops!, Data could not be fetched.',
+                    'Oops!, Data could not be fetched.',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 );
@@ -117,60 +116,234 @@ class SearchResultPage extends StatelessWidget{
     int resultCount = (data['results'] as List).length;
     List results = data['results'];
     return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisExtent: 284.0,
-            mainAxisSpacing: 10.0,
-          ),
-          itemCount: resultCount,
-          itemBuilder: (context, index) {
-            // again, extracting some useful movie-specific data
-            String title = results[index]['original_title'];
-            // make the title not too long
-            // if(title.length > 34) title = '${title.substring(0, 34)} ...';
-            String imagePath = 'https://image.tmdb.org/t/p/w200${results[index]['poster_path']}';
-            String overview = results[index]['overview'];
-            return Card(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Image.network(
-                    imagePath,
-                    height: 210.0,
-                    loadingBuilder: (context, child, progress) {
-                      if(progress == null){
-                        return child;
-                      } else {
-                        return const SizedBox(height: 210, child: Center(child: SizedBox(width: 50, child: LinearProgressIndicator(),),),);
-                      }
-                    },
-                    errorBuilder: (context, obj, trace) {
-                      return SizedBox(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisExtent: 284.0,
+        mainAxisSpacing: 10.0,
+      ),
+      itemCount: resultCount,
+      itemBuilder: (context, index) {
+        // again, extracting some useful movie-specific data
+        String title = results[index]['original_title'];
+        // make the title not too long
+        // if(title.length > 34) title = '${title.substring(0, 34)} ...';
+        String imagePath =
+            'https://image.tmdb.org/t/p/w185${results[index]['poster_path']}';
+        String overview = results[index]['overview'];
+        return GestureDetector(
+          child: Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Image.network(
+                  imagePath,
+                  height: 210.0,
+                  loadingBuilder: (context, child, progress) {
+                    if (progress == null) {
+                      return child;
+                    } else {
+                      return const SizedBox(
                         height: 210,
                         child: Center(
-                          child: Text(
-                            'No image',
-                            style: Theme.of(context).textTheme.bodyLarge,
+                          child: SizedBox(
+                            width: 50,
+                            child: LinearProgressIndicator(),
                           ),
                         ),
                       );
-                    },
+                    }
+                  },
+                  errorBuilder: (context, obj, trace) {
+                    return SizedBox(
+                      height: 210,
+                      child: Center(
+                        child: Text(
+                          'No image',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    title,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.fade,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                ),
+              ],
+            ),
+          ),
+          onTap: () => _goToDetailPage(context, data['results'][index]),
+        );
+      },
+    );
+  }
+
+  // Actions ...
+
+  void _goToDetailPage(BuildContext context, Map movieData) {
+    Navigator.pushNamed(
+      context,
+      '/searchResult/detail',
+      arguments: movieData,
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  Widget build(BuildContext context) {
+    // we assume the argument will never be null
+    Map movieData = ModalRoute.of(context)!.settings.arguments as Map;
+    String imagePath =
+        'https://image.tmdb.org/t/p/w500${movieData['poster_path']}';
+    // get some important pieces from the movieData
+    String title = movieData['original_title'].toString();
+    String releaseYear = (movieData['release_date']! as String).substring(0, 4);
+    double rating = (movieData['vote_average'] as num).toDouble();
+    String overview = movieData['overview'];
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              _buildPosterImage(imagePath),
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Center(
                     child: Text(
                       title,
-                      maxLines: 2,
+                      style: Theme.of(context).textTheme.headlineSmall,
                       textAlign: TextAlign.center,
-                      overflow: TextOverflow.fade,
-                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
-                ],
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: () => _showOverview(context, overview),
+                    child: const Text('Look at overview'),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: buildReleaseRatingTable(context, releaseYear, rating),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildReleaseRatingTable(
+      BuildContext context, String releaseYear, double rating) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Table(
+        children: <TableRow>[
+          TableRow(
+            children: <Text>[
+              Text(
+                'Release',
+                style: Theme.of(context).textTheme.subtitle1,
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                'Rating',
+                style: Theme.of(context).textTheme.subtitle1,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          TableRow(
+            children: <Text>[
+              Text(
+                releaseYear,
+                style: Theme.of(context).textTheme.headline4,
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                '$rating',
+                style: Theme.of(context).textTheme.headline4,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPosterImage(String imagePath) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 2.0),
+      decoration: const BoxDecoration(
+          border: Border.symmetric(
+              horizontal: BorderSide(width: 4.0, color: Colors.blue))),
+      child: Image.network(
+        imagePath,
+        height: 290.0,
+        fit: BoxFit.fitWidth,
+        loadingBuilder: (context, child, progress) {
+          if (progress == null) {
+            return child;
+          } else {
+            return const SizedBox(
+              height: 290.0,
+              child: Center(
+                child: SizedBox(
+                  width: 60.0,
+                  child: LinearProgressIndicator(),
+                ),
               ),
             );
-          },
-        );
+          }
+        },
+        errorBuilder: (context, __, ___) {
+          return SizedBox(
+            height: 290.0,
+            child: Center(
+              child: Text(
+                'No image',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Actions ...
+
+  void _showOverview(BuildContext context, overview) {
+    // this is supposed to display an alert box with the movie overview in it
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: const Text('Overview'),
+            content: SingleChildScrollView(
+              child: Text(
+                overview,
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ),
+          );
+        });
   }
 }
