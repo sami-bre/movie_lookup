@@ -127,7 +127,7 @@ class SearchResultPage extends StatelessWidget{
             // again, extracting some useful movie-specific data
             String title = results[index]['original_title'];
             // make the title not too long
-            if(title.length > 34) title = '${title.substring(0, 34)} ...';
+            // if(title.length > 34) title = '${title.substring(0, 34)} ...';
             String imagePath = 'https://image.tmdb.org/t/p/w200${results[index]['poster_path']}';
             String overview = results[index]['overview'];
             return Card(
@@ -158,10 +158,12 @@ class SearchResultPage extends StatelessWidget{
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 4.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
                       title,
+                      maxLines: 2,
                       textAlign: TextAlign.center,
+                      overflow: TextOverflow.fade,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
