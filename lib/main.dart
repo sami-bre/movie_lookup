@@ -1,14 +1,30 @@
 import 'dart:convert';
+import 'dart:math' as math;
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 const String api_key = 'a5d01b4d751380e044e2246e605df108';
 
+const posterPaths = [
+  'cloverfield_paradox.jpg',
+  'get_out.jpg',
+  'interstellar.jpg',
+  'lord_of_the_rings.jpg',
+  'the_dictator.jpg',
+  'the_social_network.jpg',
+  'despicable_me.jpg',
+  'home.jpg',
+  'iron_man_2.jpg',
+  'me_before_you.jpg',
+  'the_interview.jpg',
+  'vive_la_france.jpg'
+];
+
 void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
+      theme: ThemeData.dark(),
       routes: {
         '/': (context) => StartPage(),
         '/searchResult': (context) => SearchResultPage(),
@@ -30,8 +46,16 @@ class StartPageState extends State<StartPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Center(
-          child: _buildSearchArea(context),
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage(posterPaths[math.Random().nextInt(12)]),
+            opacity: 0.3,
+            fit: BoxFit.cover,
+          )),
+          child: Center(
+            child: _buildSearchArea(context),
+          ),
         ),
       ),
     );
@@ -129,7 +153,6 @@ class SearchResultPage extends StatelessWidget {
         // if(title.length > 34) title = '${title.substring(0, 34)} ...';
         String imagePath =
             'https://image.tmdb.org/t/p/w185${results[index]['poster_path']}';
-        String overview = results[index]['overview'];
         return GestureDetector(
           child: Card(
             child: Column(
@@ -197,6 +220,8 @@ class SearchResultPage extends StatelessWidget {
 }
 
 class DetailPage extends StatelessWidget {
+
+  @override
   Widget build(BuildContext context) {
     // we assume the argument will never be null
     Map movieData = ModalRoute.of(context)!.settings.arguments as Map;
