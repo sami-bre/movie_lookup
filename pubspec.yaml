@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: any
+  mailer: ^5.2.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -72,6 +73,10 @@ flutter:
     - the_interview.jpg
     - the_social_network.jpg
     - vive_la_france.jpg
+    - game_of_thrones.jpg
+    - hacksaw_ridge.jpg
+    - spongebob.jpg
+    - die_in_the_west.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
