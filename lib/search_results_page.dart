@@ -24,9 +24,22 @@ class SearchResultPage extends StatelessWidget {
                 return buildGridView(data);
               } else if (snapshot.hasError) {
                 return Center(
-                  child: Text(
-                    'Oops!, Data could not be fetched.',
-                    style: Theme.of(context).textTheme.titleLarge,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Icon(
+                          Icons.wifi_off,
+                          size: 60.0,
+                        ),
+                      ),
+                      Text(
+                        'Oops!\nNetwork error.',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                    ],
                   ),
                 );
               } else {
