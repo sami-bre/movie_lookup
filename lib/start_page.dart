@@ -13,7 +13,9 @@ const posterPaths = [
   'iron_man_2.jpg',
   'me_before_you.jpg',
   'the_interview.jpg',
-  'vive_la_france.jpg'
+  'vive_la_france.jpg',
+  'die_in_the_west.jpg',
+  'spongebob.jpg',
 ];
 
 class StartPage extends StatefulWidget {
@@ -30,11 +32,13 @@ class StartPageState extends State<StartPage> {
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(posterPaths[math.Random().nextInt(12)]),
-                opacity: 0.3,
-                fit: BoxFit.cover,
-              )),
+            image: DecorationImage(
+              image: AssetImage(
+                  posterPaths[math.Random().nextInt(posterPaths.length)]),
+              opacity: 0.3,
+              fit: BoxFit.cover,
+            ),
+          ),
           child: Center(
             child: _buildSearchArea(context),
           ),
