@@ -28,9 +28,9 @@ class StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
@@ -39,8 +39,22 @@ class StartPageState extends State<StartPage> {
               fit: BoxFit.cover,
             ),
           ),
-          child: Center(
-            child: _buildSearchArea(context),
+          child: Column(
+            children: <Widget>[
+              const Expanded(flex: 8, child: SizedBox.shrink()),
+              _buildSearchArea(context),
+              const Expanded(flex: 4, child: SizedBox.shrink()),
+              TextButton(
+                onPressed: (){
+                  Navigator.pushNamed(
+                    context,
+                    '/about'
+                  );
+                },
+                child: const Text('About', textScaleFactor: 1.2,),
+              ),
+              const Expanded(flex: 1, child: SizedBox.shrink())
+            ],
           ),
         ),
       ),
