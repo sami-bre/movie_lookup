@@ -45,11 +45,11 @@ class SearchResultPage extends StatelessWidget {
   Widget buildNoMoviesFoundWidget(BuildContext context) {
     return buildDataFetchProblemWidget(
       context,
-      problemText: 'No movies found',
-      iconThing: const Icon(
-        Icons.not_listed_location_outlined,
-        size: 60.0,
-      ),
+      problemText: 'Nothing found',
+      iconThing: Image.asset(
+        'nothing_found.gif',
+        width: 260.0,
+      )
     );
   }
 
@@ -57,10 +57,10 @@ class SearchResultPage extends StatelessWidget {
     return buildDataFetchProblemWidget(
       context,
       problemText: 'Oops!\nNetwork error.',
-      iconThing: const Icon(
-        Icons.wifi_off,
-        size: 60.0,
-      ),
+      iconThing: Image.asset(
+        'network_problem.gif',
+        width: 260.0,
+      )
     );
   }
 

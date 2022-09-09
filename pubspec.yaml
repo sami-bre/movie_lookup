@@ -78,6 +78,8 @@ flutter:
     - spongebob.jpg
     - die_in_the_west.jpg
     - war_room.jpg
+    - network_problem.gif
+    - nothing_found.gif
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
