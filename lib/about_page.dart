@@ -64,62 +64,75 @@ class AboutPageState extends State<AboutPage> {
   }
 
   Widget _buildInfoArea(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'by Sami.',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        const SizedBox(height: 8.0),
-        Row(
-          children: const <Widget>[
-            Icon(Icons.web),
-            SizedBox(
-              width: 4.0,
+    return LayoutBuilder(
+
+      builder: (BuildContext context, BoxConstraints constraints) {
+        // the textStyle for some text is decided based on the width of the
+        // column. I don't know why the conditional expression returns a
+        // nullable type but I banged it anyway.
+        TextStyle textStyle =
+        ((constraints.biggest.width < 224.0) ?
+            Theme.of(context).textTheme.caption :
+            Theme.of(context).textTheme.bodyMedium)!;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'by Sami.',
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            Text('samibre.com')
-          ],
-        ),
-        const SizedBox(
-          height: 2.0,
-        ),
-        Row(
-          children: const <Widget>[
-            Icon(Icons.telegram),
-            SizedBox(
-              width: 4.0,
+            const SizedBox(height: 8.0),
+            Row(
+              children: <Widget>[
+                const Icon(Icons.web),
+                const SizedBox(
+                  width: 4.0,
+                ),
+                Text('samibre.com', style: textStyle,)
+              ],
             ),
-            Text('@sami_bre')
-          ],
-        ),
-        const SizedBox(
-          height: 2.0,
-        ),
-        Row(
-          children: const <Widget>[
-            Icon(Icons.email),
-            SizedBox(
-              width: 4.0,
+            const SizedBox(
+              height: 2.0,
             ),
-            Text('samuelbirhanu121@gmail.com')
+            Row(
+              children: <Widget>[
+                const Icon(Icons.telegram),
+                const SizedBox(
+                  width: 4.0,
+                ),
+                Text('@sami_bre', style: textStyle,)
+              ],
+            ),
+            const SizedBox(
+              height: 2.0,
+            ),
+            Row(
+              children: <Widget>[
+                const Icon(Icons.email),
+                const SizedBox(
+                  width: 4.0,
+                ),
+                Text('samuelbirhanu121@gmail.com', style: textStyle,)
+              ],
+            ),
+            const SizedBox(
+              height: 4.0,
+            ),
+            const Text(
+              'Shout-out to themoviedb API.',
+              textScaleFactor: 1.2,
+            ),
+            const SizedBox(
+              height: 4.0,
+            ),
+            Text(
+              'Illustration by Olga \nNesnova from Ouch!.',
+              style: Theme.of(context).textTheme.caption,
+            ),
           ],
-        ),
-        const SizedBox(
-          height: 4.0,
-        ),
-        const Text(
-          'Shout-out to themoviedb API.',
-          textScaleFactor: 1.2,
-        ),
-        const SizedBox(
-          height: 4.0,
-        ),
-        Text(
-          'Illustration by Olga \nNesnova from Ouch!.',
-          style: Theme.of(context).textTheme.caption,
-        ),
-      ],
+        );
+      },
+
     );
   }
 
