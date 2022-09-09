@@ -10,7 +10,6 @@ class AboutPage extends StatefulWidget {
 }
 
 class AboutPageState extends State<AboutPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,9 +71,7 @@ class AboutPageState extends State<AboutPage> {
           'by Sami.',
           style: Theme.of(context).textTheme.headlineMedium,
         ),
-        const SizedBox(
-          height: 8.0
-        ),
+        const SizedBox(height: 8.0),
         Row(
           children: const <Widget>[
             Icon(Icons.web),
@@ -114,6 +111,13 @@ class AboutPageState extends State<AboutPage> {
         const Text(
           'Shout-out to themoviedb API.',
           textScaleFactor: 1.2,
+        ),
+        const SizedBox(
+          height: 4.0,
+        ),
+        Text(
+          'Illustration by Olga \nNesnova from Ouch!.',
+          style: Theme.of(context).textTheme.caption,
         ),
       ],
     );
@@ -195,12 +199,9 @@ class AboutPageState extends State<AboutPage> {
       // show a snackBar telling message is sent successfully
       scaffoldMessenger.showSnackBar(const SnackBar(
         content: Padding(
-          padding:  EdgeInsets.all(4.0),
-          child:  Text(
-              'Message sent.',
-              textScaleFactor: 1.1,
-              textAlign: TextAlign.center
-          ),
+          padding: EdgeInsets.all(4.0),
+          child: Text('Message sent.',
+              textScaleFactor: 1.1, textAlign: TextAlign.center),
         ),
         backgroundColor: Colors.blue,
       ));
@@ -208,12 +209,9 @@ class AboutPageState extends State<AboutPage> {
       // show a snackBar telling the message was not sent due to network problems.
       scaffoldMessenger.showSnackBar(SnackBar(
         content: const Padding(
-          padding:  EdgeInsets.all(4.0),
-          child:  Text(
-            'Message not sent. Network problems.',
-            textScaleFactor: 1.1,
-            textAlign: TextAlign.center
-          ),
+          padding: EdgeInsets.all(4.0),
+          child: Text('Message not sent. Network problems.',
+              textScaleFactor: 1.1, textAlign: TextAlign.center),
         ),
         backgroundColor: Colors.red[300],
       ));
