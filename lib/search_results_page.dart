@@ -94,74 +94,81 @@ class SearchResultPage extends StatelessWidget {
     // extract some useful items from the data
     int resultCount = (data['results'] as List).length;
     List results = data['results'];
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisExtent: 284.0,
-        mainAxisSpacing: 10.0,
-      ),
-      itemCount: resultCount,
-      itemBuilder: (context, index) {
-        // again, extracting some useful movie-specific data
-        String title = results[index]['original_title'];
-        // make the title not too long
-        // if(title.length > 34) title = '${title.substring(0, 34)} ...';
-        String imagePath =
-            'https://image.tmdb.org/t/p/w185${results[index]['poster_path']}';
-        return GestureDetector(
-          child: Card(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Image.network(
-                  imagePath,
-                  height: 210.0,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, progress) {
-                    if (progress == null) {
-                      return child;
-                    } else {
-                      return const SizedBox(
-                        height: 210,
-                        child: Center(
-                          child: SizedBox(
-                            width: 50,
-                            child: LinearProgressIndicator(),
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  errorBuilder: (context, obj, trace) {
-                    return SizedBox(
-                      height: 210,
-                      child: Center(
-                        child: Text(
-                          'No image',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    title,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.fade,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-              ],
-            ),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints){
+        int cardCountPerRow = constraints.biggest.width ~/ 140;
+        return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: cardCountPerRow,
+            mainAxisExtent: 284.0,
+            mainAxisSpacing: 10.0,
           ),
-          onTap: () => _goToDetailPage(context, data['results'][index]),
+          itemCount: resultCount,
+          itemBuilder: (context, index) {
+            // again, extracting some useful movie-specific data
+            String title = results[index]['original_title'];
+            // make the title not too long
+            // if(title.length > 34) title = '${title.substring(0, 34)} ...';
+            String imagePath =
+                'https://image.tmdb.org/t/p/w185${results[index]['poster_path']}';
+            return GestureDetector(
+              child: Card(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Image.network(
+                      imagePath,
+                      height: 210.0,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, progress) {
+                        if (progress == null) {
+                          return child;
+                        } else {
+                          return const SizedBox(
+                            height: 210,
+                            child: Center(
+                              child: SizedBox(
+                                width: 50,
+                                child: LinearProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      errorBuilder: (context, obj, trace) {
+                        return SizedBox(
+                          height: 210,
+                          child: Center(
+                            child: Text(
+                              'No image',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        title,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.fade,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              onTap: () => _goToDetailPage(context, data['results'][index]),
+            );
+          },
         );
       },
     );
+
+
   }
 
   // Actions ...
