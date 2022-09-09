@@ -21,27 +21,15 @@ class SearchResultPage extends StatelessWidget {
                 (BuildContext context, AsyncSnapshot<http.Response> snapshot) {
               if (snapshot.hasData) {
                 Map<String, dynamic> data = json.decode(snapshot.data!.body);
-                return buildGridView(data);
+                // check the size of the 'results' list in the data and show an
+                // 'empty results' message if the array is empty.
+                if ((data['results'] as List).isEmpty) {
+                  return buildNoMoviesFoundWidget(context);
+                } else {
+                  return buildGridView(data);
+                }
               } else if (snapshot.hasError) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Icon(
-                          Icons.wifi_off,
-                          size: 60.0,
-                        ),
-                      ),
-                      Text(
-                        'Oops!\nNetwork error.',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ],
-                  ),
-                );
+                return buildNetworkProblemWidget(context);
               } else {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -50,6 +38,54 @@ class SearchResultPage extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildNoMoviesFoundWidget(BuildContext context) {
+    return buildDataFetchProblemWidget(
+      context,
+      problemText: 'No movies found',
+      iconThing: const Icon(
+        Icons.not_listed_location_outlined,
+        size: 60.0,
+      ),
+    );
+  }
+
+  Widget buildNetworkProblemWidget(BuildContext context) {
+    return buildDataFetchProblemWidget(
+      context,
+      problemText: 'Oops!\nNetwork error.',
+      iconThing: const Icon(
+        Icons.wifi_off,
+        size: 60.0,
+      ),
+    );
+  }
+
+  Center buildDataFetchProblemWidget(
+    BuildContext context, {
+    required String problemText,
+    Widget? iconThing,
+  }) {
+    // this is a relatively lower level widget returning method that gets
+    // called by other widget returning methods.
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          if (iconThing != null)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: iconThing,
+            ),
+          Text(
+            problemText,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ],
       ),
     );
   }
