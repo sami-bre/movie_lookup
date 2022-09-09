@@ -93,10 +93,13 @@ class StartPageState extends State<StartPage> {
   // Actions ...
 
   void _search(String movieTitle) {
-    Navigator.pushNamed(
-      context,
-      '/searchResult',
-      arguments: movieTitle,
-    );
+    // check that the title is not empty and push the searchResults route. (using some jargon :)
+    if(movieTitle != ''){
+      Navigator.pushNamed(
+        context,
+        '/searchResult',
+        arguments: movieTitle,
+      );
+    }
   }
 }
