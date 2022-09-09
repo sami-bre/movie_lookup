@@ -16,6 +16,9 @@ const posterPaths = [
   'vive_la_france.jpg',
   'die_in_the_west.jpg',
   'spongebob.jpg',
+  'war_room.jpg',
+  'hacksaw_ridge.jpg',
+  'game_of_thrones.jpg',
 ];
 
 class StartPage extends StatefulWidget {
