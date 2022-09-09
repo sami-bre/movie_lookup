@@ -74,6 +74,7 @@ class StartPageState extends State<StartPage> {
         children: <Widget>[
           Text(
             'Search Movies',
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline4,
           ),
           TextField(
