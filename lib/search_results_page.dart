@@ -81,6 +81,7 @@ class SearchResultPage extends StatelessWidget {
                 Image.network(
                   imagePath,
                   height: 210.0,
+                  fit: BoxFit.cover,
                   loadingBuilder: (context, child, progress) {
                     if (progress == null) {
                       return child;
