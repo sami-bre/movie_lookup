@@ -40,6 +40,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.10.0
+
+flutter_icons:
+  android: true
+  image_path: "assets/icons/icon.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -77,6 +82,7 @@ flutter:
     - spongebob.jpg
     - die_in_the_west.jpg
     - war_room.jpg
+    - logo.png
     - assets/illustrations/network_problem.gif
     - assets/illustrations/nothing_found.gif
   #   - images/a_dot_ham.jpeg
