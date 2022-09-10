@@ -55,7 +55,7 @@ class SearchResultPage extends StatelessWidget {
       context,
       problemText: 'Nothing found',
       iconThing: Image.asset(
-        'nothing_found.gif',
+        'assets/illustrations/nothing_found.gif',
         width: 260.0,
       )
     );
@@ -66,7 +66,7 @@ class SearchResultPage extends StatelessWidget {
       context,
       problemText: 'Oops!\nNetwork error.',
       iconThing: Image.asset(
-        'network_problem.gif',
+        'assets/illustrations/network_problem.gif',
         width: 260.0,
       )
     );
