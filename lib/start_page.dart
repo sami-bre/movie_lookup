@@ -14,7 +14,6 @@ const posterPaths = [
   'iron_man_2.jpg',
   'me_before_you.jpg',
   'the_interview.jpg',
-  'vive_la_france.jpg',
   'die_in_the_west.jpg',
   'spongebob.jpg',
   'war_room.jpg',
