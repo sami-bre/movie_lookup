@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 
 
 class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // this sets the orientation of the route.
+    // preferred orientation should be set for each route.
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     // we assume the argument will never be null
     Map movieData = ModalRoute.of(context)!.settings.arguments as Map;
     String imagePath =

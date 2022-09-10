@@ -1,6 +1,7 @@
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'main.dart';
 
@@ -12,6 +13,9 @@ class AboutPage extends StatefulWidget {
 class AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
+    // this sets the orientation of the route.
+    // preferred orientation should be set for each route.
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

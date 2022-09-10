@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -7,6 +8,13 @@ import 'main.dart'; // this imports the api_key
 class SearchResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // this sets the orientation of the route.
+    // preferred orientation should be set for each route.
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ]);
     // we assume the argument is never null and get the data (search result)
     String movieTitle = ModalRoute.of(context)!.settings.arguments as String;
     Future<http.Response> futureData = http.get(Uri.parse(

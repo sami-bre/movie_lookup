@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:math' as math;
 
 const posterPaths = [
@@ -31,6 +32,9 @@ class StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
+    // this sets the orientation of the route.
+    // preferred orientation should be set for each route.
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return Scaffold(
       body: SafeArea(
         child: Container(
