@@ -1,16 +1,12 @@
-# api_lab
+# Moverviews
 
-A new Flutter project.
+An app to quickly look up a short overview of any movie.
 
-## Getting Started
+### You can install the moverviews.apk file on your android phone.
+The moverviews.apk file is in the root project directory. Just look up : )
 
-This project is a starting point for a Flutter application.
+## The internals and acknowledgement
 
-A few resources to get you started if this is your first Flutter project:
+This is a flutter project. It's mostly dart code.
+The app gets all the movie data from themoviedb API. They're great so check them.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
