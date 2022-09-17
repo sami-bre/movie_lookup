@@ -54,9 +54,9 @@ class AboutPageState extends State<AboutPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Icon(
-            Icons.local_movies,
-            size: 70.0,
+          Image.asset(
+            'logo.png',
+            height: 70,
           ),
           Text(
             'Moverviews',
