@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:moverviews/models/news.dart';
-import 'package:moverviews/util/httpHellper.dart';
-import 'dart:convert';
-
-import 'main.dart'; // this imports the api_key
-
+import 'package:moverviews/util/httpHelper.dart';
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
