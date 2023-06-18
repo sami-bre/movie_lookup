@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moverviews/models/news.dart';
 import 'package:moverviews/util/httpHelper.dart';
+
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
@@ -12,6 +13,37 @@ class _HomePageState extends State<HomePage> {
 
   Icon visibleIcon = Icon(Icons.search);
   Widget searchBar = Text('Top News');
+  late final textField;
+  Future<List<News>> newsFuture = HttpHelper().getLatestNews();
+  String dummyText = "dummy";
+
+  void doSearch(String text) {
+    var temp = HttpHelper().searchNews(text);
+    setState(() {
+      newsFuture = temp;
+      dummyText = text;
+    });
+    newsFuture.then((value) {
+      if (value.isEmpty) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('No news found for $text')));
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    textField = TextField(
+      textInputAction: TextInputAction.search,
+      onSubmitted: doSearch,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 20.0,
+      ),
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // this sets the orientation of the route.
@@ -22,60 +54,55 @@ class _HomePageState extends State<HomePage> {
       DeviceOrientation.landscapeRight
     ]);
 
-    Future<List<News>> latestNews = HttpHelper().getLatestNews();
-
     return Scaffold(
-      appBar: AppBar(title: searchBar, centerTitle: true, actions: <Widget>[
-        IconButton(
-          icon: visibleIcon,
-          onPressed: () {
-            setState(() {
-              if (this.visibleIcon.icon == Icons.search) {
-                this.visibleIcon = Icon(Icons.cancel);
-                this.searchBar = TextField(
-                  textInputAction: TextInputAction.search,
-                  onSubmitted: (String text) {},
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                );
-              } else {
-                setState(() {
-                  this.visibleIcon = Icon(Icons.search);
-                  this.searchBar = Text('Top News');
-                });
-              }
-            });
-          },
-        ),
-      ]),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: FutureBuilder<List<News>>(
-            future: latestNews,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<News>> snapshot) {
-              if (snapshot.hasData) {
-                var news_list = snapshot.data!;
-                if (news_list.isEmpty) {
-                  return buildNoNewsFoundWidget(context);
+        appBar: AppBar(title: searchBar, centerTitle: true, actions: <Widget>[
+          IconButton(
+            icon: visibleIcon,
+            onPressed: () {
+              setState(() {
+                if (this.visibleIcon.icon == Icons.search) {
+                  this.visibleIcon = Icon(Icons.cancel);
+                  this.searchBar = textField;
                 } else {
-                  return buildGridView(news_list);
+                  setState(() {
+                    this.visibleIcon = Icon(Icons.search);
+                    this.searchBar = Text('Top News');
+                    newsFuture = HttpHelper().getLatestNews();
+                  });
                 }
-              } else if (snapshot.hasError) {
-                return buildNetworkProblemWidget(context);
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+              });
             },
           ),
+        ]),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: FutureBuilder<List<News>>(
+              future: newsFuture,
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<News>> snapshot) {
+                if (snapshot.hasData) {
+                  var news_list = snapshot.data!;
+                  if (news_list.isEmpty) {
+                    return buildNoNewsFoundWidget(context);
+                  } else {
+                    return buildGridView(news_list);
+                  }
+                } else if (snapshot.hasError) {
+                  return buildNetworkProblemWidget(context);
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+          ),
         ),
-      ),
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Text(dummyText),
+        ));
   }
 
   Widget buildNoNewsFoundWidget(BuildContext context) {

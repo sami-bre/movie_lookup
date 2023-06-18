@@ -19,4 +19,18 @@ class HttpHelper {
       throw Exception('Failed to load latest news');
     }
   }
+
+  Future<List<News>> searchNews(String query) async {
+    var search = await http.get(Uri.parse(
+        'https://newsapi.org/v2/everything?sources=cnn&q=$query&apiKey=$api_key'));
+
+    if (search.statusCode == 200) {
+      Map<String, dynamic> result = json.decode(search.body);
+      var data = result['articles'] as List;
+      List<News> news = data.map((article) => News.fromJson(article)).toList();
+      return news;
+    } else {
+      throw Exception('Failed to load search results');
+    }
+  }
 }
