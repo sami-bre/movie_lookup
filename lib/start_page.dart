@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
 
-const posterPaths = [];
-
 class StartPage extends StatefulWidget {
   @override
   StartPageState createState() => StartPageState();
@@ -21,28 +19,18 @@ class StartPageState extends State<StartPage> {
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(
-                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-videos%2Fnews-background-loop&psig=AOvVaw3y6TQxX8FpnPAuXAFMreLh&ust=1687138584030000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCMDx0u7Iy_8CFQAAAAAdAAAAABAE",
+              // image: DecorationImage(
+              //   image: AssetImage(
+              //       'interstellar.jpg'),
+              //   opacity: 0.3,
+              //   fit: BoxFit.cover,
+              // ),
               ),
-              opacity: 0.3,
-              fit: BoxFit.cover,
-            ),
-          ),
           child: Column(
             children: <Widget>[
               const Expanded(flex: 8, child: SizedBox.shrink()),
               _buildSearchArea(context),
               const Expanded(flex: 4, child: SizedBox.shrink()),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/about');
-                },
-                child: const Text(
-                  'About',
-                  textScaleFactor: 1.2,
-                ),
-              ),
               const Expanded(flex: 1, child: SizedBox.shrink())
             ],
           ),

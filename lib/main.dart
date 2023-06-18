@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'start_page.dart';
 import 'search_results_page.dart';
 import 'detail_page.dart';
-import 'about_page.dart';
 
-const String api_key = '6baf2d3bf48e08e7c7ac217bd76d9600';
+const String api_key = '68d94cd4257c407195ec66ebe5b749f7';
 final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 
 void main() {
@@ -17,10 +16,9 @@ void main() {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       routes: {
-        '/': (context) => StartPage(),
-        '/searchResult': (context) => SearchResultPage(),
-        '/searchResult/detail': (context) => DetailPage(),
-        '/about': (context) => AboutPage()
+        // '/': (context) => StartPage(),
+        '/': (context) => SearchResultPage(),
+        '/detail': (context) => DetailPage(),
       },
     ),
   );

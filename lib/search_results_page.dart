@@ -5,7 +5,16 @@ import 'dart:convert';
 
 import 'main.dart'; // this imports the api_key
 
-class SearchResultPage extends StatelessWidget {
+class SearchResultPage extends StatefulWidget {
+  @override
+  State<SearchResultPage> createState() => _SearchResultPageState();
+}
+
+class _SearchResultPageState extends State<SearchResultPage> {
+  TextEditingController controller = TextEditingController();
+
+  Icon visibleIcon = Icon(Icons.search);
+  Widget searchBar = Text('Top News');
   @override
   Widget build(BuildContext context) {
     // this sets the orientation of the route.
@@ -15,24 +24,53 @@ class SearchResultPage extends StatelessWidget {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight
     ]);
-    // we assume the argument is never null and get the data (search result)
-    String movieTitle = ModalRoute.of(context)!.settings.arguments as String;
-    Future<http.Response> futureData = http.get(Uri.parse(
-        'https://api.themoviedb.org/3/search/movie?api_key=$api_key&query="$movieTitle"'));
+
+    // String newsHeadline = ModalRoute.of(context)!.settings.arguments as String;
+    // Future<http.Response> searchQuery = http.get(Uri.parse(
+    //     'https://newsapi.org/v2/top-headlines?country=us&access_key=$api_key&query=$controller'));
+
+// MODIFY THE URL TO INCLUDE SOMETHING LIKE "LATEST" OR "TOPNEWS"
+    Future<http.Response> latest = http.get(Uri.parse(
+        'https://newsapi.org/v2/everything?sources=cnn&apiKey=68d94cd4257c407195ec66ebe5b749f7'));
+
     return Scaffold(
+      appBar: AppBar(title: searchBar, centerTitle: true, actions: <Widget>[
+        IconButton(
+          icon: visibleIcon,
+          onPressed: () {
+            setState(() {
+              if (this.visibleIcon.icon == Icons.search) {
+                this.visibleIcon = Icon(Icons.cancel);
+                this.searchBar = TextField(
+                  textInputAction: TextInputAction.search,
+                  onSubmitted: (String text) {},
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
+                );
+              } else {
+                setState(() {
+                  this.visibleIcon = Icon(Icons.search);
+                  this.searchBar = Text('Top News');
+                });
+              }
+            });
+          },
+        ),
+      ]),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: FutureBuilder(
-            future: futureData,
+            future: latest,
             builder:
                 (BuildContext context, AsyncSnapshot<http.Response> snapshot) {
               if (snapshot.hasData) {
-                Map<String, dynamic> data = json.decode(snapshot.data!.body);
-                // check the size of the 'results' list in the data and show an
-                // 'empty results' message if the array is empty.
-                if ((data['results'] as List).isEmpty) {
-                  return buildNoMoviesFoundWidget(context);
+                Map<String, dynamic> result = json.decode(snapshot.data!.body);
+                var data = result['articles'] as List;
+                if (data.isEmpty) {
+                  return buildNoNewsFoundWidget(context);
                 } else {
                   return buildGridView(data);
                 }
@@ -50,26 +88,22 @@ class SearchResultPage extends StatelessWidget {
     );
   }
 
-  Widget buildNoMoviesFoundWidget(BuildContext context) {
-    return buildDataFetchProblemWidget(
-      context,
-      problemText: 'Nothing found',
-      iconThing: Image.asset(
-        'assets/illustrations/nothing_found.gif',
-        width: 260.0,
-      )
-    );
+  Widget buildNoNewsFoundWidget(BuildContext context) {
+    return buildDataFetchProblemWidget(context,
+        problemText: 'Nothing found',
+        iconThing: Image.asset(
+          'assets/illustrations/nothing_found.gif',
+          width: 260.0,
+        ));
   }
 
   Widget buildNetworkProblemWidget(BuildContext context) {
-    return buildDataFetchProblemWidget(
-      context,
-      problemText: 'Oops!\nNetwork error.',
-      iconThing: Image.asset(
-        'assets/illustrations/network_problem.gif',
-        width: 260.0,
-      )
-    );
+    return buildDataFetchProblemWidget(context,
+        problemText: 'Oops!\nNetwork error.',
+        iconThing: Image.asset(
+          'assets/illustrations/network_problem.gif',
+          width: 260.0,
+        ));
   }
 
   Center buildDataFetchProblemWidget(
@@ -98,12 +132,12 @@ class SearchResultPage extends StatelessWidget {
     );
   }
 
-  Widget buildGridView(Map data) {
+  Widget buildGridView(List data) {
     // extract some useful items from the data
-    int resultCount = (data['results'] as List).length;
-    List results = data['results'];
+    int resultCount = (data as List).length;
+    List newsList = data;
     return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints){
+      builder: (BuildContext context, BoxConstraints constraints) {
         int cardCountPerRow = constraints.biggest.width ~/ 140;
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -114,11 +148,10 @@ class SearchResultPage extends StatelessWidget {
           itemCount: resultCount,
           itemBuilder: (context, index) {
             // again, extracting some useful movie-specific data
-            String title = results[index]['original_title'];
+            String title = newsList[index]['title'];
             // make the title not too long
             // if(title.length > 34) title = '${title.substring(0, 34)} ...';
-            String imagePath =
-                'https://image.tmdb.org/t/p/w185${results[index]['poster_path']}';
+            String imagePath = newsList[index]['urlToImage'] ?? '';
             return GestureDetector(
               child: Card(
                 child: Column(
@@ -169,14 +202,12 @@ class SearchResultPage extends StatelessWidget {
                   ],
                 ),
               ),
-              onTap: () => _goToDetailPage(context, data['results'][index]),
+              onTap: () => _goToDetailPage(context, data[index]),
             );
           },
         );
       },
     );
-
-
   }
 
   // Actions ...
