@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:moverviews/models/news.dart';
+import 'package:moverviews/util/httpHellper.dart';
 import 'dart:convert';
 
 import 'main.dart'; // this imports the api_key
@@ -30,8 +32,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
     //     'https://newsapi.org/v2/top-headlines?country=us&access_key=$api_key&query=$controller'));
 
 // MODIFY THE URL TO INCLUDE SOMETHING LIKE "LATEST" OR "TOPNEWS"
-    Future<http.Response> latest = http.get(Uri.parse(
-        'https://newsapi.org/v2/everything?sources=cnn&apiKey=68d94cd4257c407195ec66ebe5b749f7'));
+    Future<List<News>> latestNews = HttpHelper().getLatestNews();
 
     return Scaffold(
       appBar: AppBar(title: searchBar, centerTitle: true, actions: <Widget>[
@@ -62,17 +63,16 @@ class _SearchResultPageState extends State<SearchResultPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0),
-          child: FutureBuilder(
-            future: latest,
+          child: FutureBuilder<List<News>>(
+            future: latestNews,
             builder:
-                (BuildContext context, AsyncSnapshot<http.Response> snapshot) {
+                (BuildContext context, AsyncSnapshot<List<News>> snapshot) {
               if (snapshot.hasData) {
-                Map<String, dynamic> result = json.decode(snapshot.data!.body);
-                var data = result['articles'] as List;
-                if (data.isEmpty) {
+                var news_list = snapshot.data!;
+                if (news_list.isEmpty) {
                   return buildNoNewsFoundWidget(context);
                 } else {
-                  return buildGridView(data);
+                  return buildGridView(news_list);
                 }
               } else if (snapshot.hasError) {
                 return buildNetworkProblemWidget(context);
@@ -132,10 +132,9 @@ class _SearchResultPageState extends State<SearchResultPage> {
     );
   }
 
-  Widget buildGridView(List data) {
+  Widget buildGridView(List<News> newsList) {
     // extract some useful items from the data
-    int resultCount = (data as List).length;
-    List newsList = data;
+    int resultCount = newsList.length;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         int cardCountPerRow = constraints.biggest.width ~/ 140;
@@ -148,10 +147,10 @@ class _SearchResultPageState extends State<SearchResultPage> {
           itemCount: resultCount,
           itemBuilder: (context, index) {
             // again, extracting some useful movie-specific data
-            String title = newsList[index]['title'];
+            String title = newsList[index].title;
             // make the title not too long
             // if(title.length > 34) title = '${title.substring(0, 34)} ...';
-            String imagePath = newsList[index]['urlToImage'] ?? '';
+            String imagePath = newsList[index].urlToImage ?? '';
             return GestureDetector(
               child: Card(
                 child: Column(
@@ -202,7 +201,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                   ],
                 ),
               ),
-              onTap: () => _goToDetailPage(context, data[index]),
+              onTap: () => {}, // _goToDetailPage(context, newsList[index]),
             );
           },
         );
