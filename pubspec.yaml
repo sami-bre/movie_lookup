@@ -1,4 +1,4 @@
-name: moverviews
+name: news_app
 description: An app to quickly look up movie overviews.
 
 # The following line prevents the package from being accidentally published to

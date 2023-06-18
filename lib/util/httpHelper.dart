@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:moverviews/models/news.dart';
+import 'package:news_app/models/news.dart';
 import 'package:http/http.dart' as http;
 
 class HttpHelper {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:moverviews/models/news.dart';
-import 'package:moverviews/util/httpHelper.dart';
+import 'package:news_app/models/news.dart';
+import 'package:news_app/util/httpHelper.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -202,12 +202,15 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        title,
-                        maxLines: 3,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.fade,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      child: SizedBox(
+                        height: 50.0,
+                        child: Text(
+                          title,
+                          maxLines: 3,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.fade,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ),
                     ),
                   ],

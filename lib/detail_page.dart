@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:moverviews/models/news.dart';
+import 'package:news_app/models/news.dart';
+import 'package:news_app/models/news.dart';
 
 class DetailPage extends StatelessWidget {
   @override
