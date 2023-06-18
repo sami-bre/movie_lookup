@@ -8,7 +8,7 @@ class HttpHelper {
 
   Future<List<News>> getLatestNews() async {
     var latest = await http.get(Uri.parse(
-        'https://newsapi.org/v2/everything?sources=cnn&apiKey=$api_key'));
+        'https://newsapi.org/v2/everything?language=en&sources=cnn,bbc&apiKey=$api_key'));
 
     if (latest.statusCode == 200) {
       Map<String, dynamic> result = json.decode(latest.body);
@@ -22,7 +22,7 @@ class HttpHelper {
 
   Future<List<News>> searchNews(String query) async {
     var search = await http.get(Uri.parse(
-        'https://newsapi.org/v2/everything?sources=cnn&q=$query&apiKey=$api_key'));
+        'https://newsapi.org/v2/everything?language=en&sources=cnn,bbc&q=$query&apiKey=$api_key'));
 
     if (search.statusCode == 200) {
       Map<String, dynamic> result = json.decode(search.body);

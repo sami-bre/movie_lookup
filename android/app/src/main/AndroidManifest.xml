@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.api_lab">
    <application
-        android:label="api_lab"
+        android:label="news app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
