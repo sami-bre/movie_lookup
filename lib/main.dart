@@ -5,7 +5,7 @@ import 'search_results_page.dart';
 import 'detail_page.dart';
 import 'about_page.dart';
 
-const String api_key = 'a5d01b4d751380e044e2246e605df108';
+const String api_key = '6baf2d3bf48e08e7c7ac217bd76d9600';
 final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
 
 void main() {
