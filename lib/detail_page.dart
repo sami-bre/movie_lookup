@@ -13,6 +13,12 @@ class DetailPage extends StatelessWidget {
     News news = ModalRoute.of(context)!.settings.arguments as News;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          news.title,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -52,7 +58,7 @@ class DetailPage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'on ${news.publishedAt}',
+                          'On ${news.publishedAt}',
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             color: Colors.grey,

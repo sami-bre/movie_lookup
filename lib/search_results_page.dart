@@ -15,13 +15,11 @@ class _HomePageState extends State<HomePage> {
   Widget searchBar = Text('Top News');
   late final textField;
   Future<List<News>> newsFuture = HttpHelper().getLatestNews();
-  String dummyText = "dummy";
 
   void doSearch(String text) {
     var temp = HttpHelper().searchNews(text);
     setState(() {
       newsFuture = temp;
-      dummyText = text;
     });
     newsFuture.then((value) {
       if (value.isEmpty) {
@@ -55,54 +53,51 @@ class _HomePageState extends State<HomePage> {
     ]);
 
     return Scaffold(
-        appBar: AppBar(title: searchBar, centerTitle: true, actions: <Widget>[
-          IconButton(
-            icon: visibleIcon,
-            onPressed: () {
-              setState(() {
-                if (this.visibleIcon.icon == Icons.search) {
-                  this.visibleIcon = Icon(Icons.cancel);
-                  this.searchBar = textField;
+      appBar: AppBar(title: searchBar, centerTitle: true, actions: <Widget>[
+        IconButton(
+          icon: visibleIcon,
+          onPressed: () {
+            setState(() {
+              if (this.visibleIcon.icon == Icons.search) {
+                this.visibleIcon = Icon(Icons.cancel);
+                this.searchBar = textField;
+              } else {
+                setState(() {
+                  this.visibleIcon = Icon(Icons.search);
+                  this.searchBar = Text('Top News');
+                  newsFuture = HttpHelper().getLatestNews();
+                });
+              }
+            });
+          },
+        ),
+      ]),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: FutureBuilder<List<News>>(
+            future: newsFuture,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<News>> snapshot) {
+              if (snapshot.hasData) {
+                var news_list = snapshot.data!;
+                if (news_list.isEmpty) {
+                  return buildNoNewsFoundWidget(context);
                 } else {
-                  setState(() {
-                    this.visibleIcon = Icon(Icons.search);
-                    this.searchBar = Text('Top News');
-                    newsFuture = HttpHelper().getLatestNews();
-                  });
+                  return buildGridView(news_list);
                 }
-              });
+              } else if (snapshot.hasError) {
+                return buildNetworkProblemWidget(context);
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
             },
           ),
-        ]),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: FutureBuilder<List<News>>(
-              future: newsFuture,
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<News>> snapshot) {
-                if (snapshot.hasData) {
-                  var news_list = snapshot.data!;
-                  if (news_list.isEmpty) {
-                    return buildNoNewsFoundWidget(context);
-                  } else {
-                    return buildGridView(news_list);
-                  }
-                } else if (snapshot.hasError) {
-                  return buildNetworkProblemWidget(context);
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            ),
-          ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Text(dummyText),
-        ));
+      ),
+    );
   }
 
   Widget buildNoNewsFoundWidget(BuildContext context) {
@@ -209,10 +204,10 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         title,
-                        maxLines: 2,
+                        maxLines: 3,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.fade,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                   ],
