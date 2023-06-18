@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:moverviews/models/news.dart';
 
 class DetailPage extends StatelessWidget {
   @override
@@ -10,63 +10,71 @@ class DetailPage extends StatelessWidget {
     // preferred orientation should be set for each route.
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     // we assume the argument will never be null
-    Map articleData = ModalRoute.of(context)!.settings.arguments as Map;
-
-
-    String imagePath = articleData['urlToImage'];
-    String publishedAt = articleData['publishedAt'];
-    String author = articleData['author'];
-    String description = articleData['description'];
-    String title = articleData['title'];
+    News news = ModalRoute.of(context)!.settings.arguments as News;
 
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _buildPosterImage(imagePath),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Center(
-                    child: Text(
-                      title,
-                      style: Theme.of(context).textTheme.headlineLarge,
-                      textAlign: TextAlign.center,
+          child: LayoutBuilder(builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _buildPosterImage(news.urlToImage ?? 'default image path'),
+                  const SizedBox(height: 14.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Center(
+                      child: Text(
+                        news.title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(fontSize: 20),
+                        textAlign: TextAlign.start,
+                      ),
                     ),
                   ),
-                ),
-              ),
-
-              Expanded(
-                  child: Padding(
-                padding: EdgeInsets.all(3),
-                child: Text(
-                  'Published by: $author on $publishedAt',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 11,
+                  const SizedBox(height: 14.0),
+                  Padding(
+                    padding: EdgeInsets.all(3),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Published by: ${news.author ?? "unknown"}',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 11,
+                          ),
+                        ),
+                        Text(
+                          'on ${news.publishedAt}',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )),
-              Expanded(
-                  flex: 2,
-                  child: Text(
-                    '$description',
+                  const SizedBox(height: 14.0),
+                  Text(
+                    news.description,
                     softWrap: true,
-                  )),
-
-            ],
-          ),
+                  ),
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );
   }
-
 
   Widget _buildPosterImage(String imagePath) {
     return Container(
@@ -107,5 +115,4 @@ class DetailPage extends StatelessWidget {
       ),
     );
   }
-
 }

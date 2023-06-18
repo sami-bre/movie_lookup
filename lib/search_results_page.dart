@@ -201,7 +201,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                   ],
                 ),
               ),
-              onTap: () => {}, // _goToDetailPage(context, newsList[index]),
+              onTap: () => _goToDetailPage(context, newsList[index]),
             );
           },
         );
@@ -211,11 +211,11 @@ class _SearchResultPageState extends State<SearchResultPage> {
 
   // Actions ...
 
-  void _goToDetailPage(BuildContext context, Map movieData) {
+  void _goToDetailPage(BuildContext context, News news) {
     Navigator.pushNamed(
       context,
-      '/searchResult/detail',
-      arguments: movieData,
+      '/detail',
+      arguments: news,
     );
   }
 }
