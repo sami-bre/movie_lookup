@@ -2,24 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
 
-const posterPaths = [
-  'cloverfield_paradox.jpg',
-  'get_out.jpg',
-  'interstellar.jpg',
-  'lord_of_the_rings.jpg',
-  'the_dictator.jpg',
-  'the_social_network.jpg',
-  'despicable_me.jpg',
-  'home.jpg',
-  'iron_man_2.jpg',
-  'me_before_you.jpg',
-  'the_interview.jpg',
-  'die_in_the_west.jpg',
-  'spongebob.jpg',
-  'war_room.jpg',
-  'hacksaw_ridge.jpg',
-  'game_of_thrones.jpg',
-];
+const posterPaths = [];
 
 class StartPage extends StatefulWidget {
   @override
@@ -39,8 +22,9 @@ class StartPageState extends State<StartPage> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(
-                  posterPaths[math.Random().nextInt(posterPaths.length)]),
+              image: NetworkImage(
+                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-videos%2Fnews-background-loop&psig=AOvVaw3y6TQxX8FpnPAuXAFMreLh&ust=1687138584030000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCMDx0u7Iy_8CFQAAAAAdAAAAABAE",
+              ),
               opacity: 0.3,
               fit: BoxFit.cover,
             ),
@@ -51,13 +35,13 @@ class StartPageState extends State<StartPage> {
               _buildSearchArea(context),
               const Expanded(flex: 4, child: SizedBox.shrink()),
               TextButton(
-                onPressed: (){
-                  Navigator.pushNamed(
-                    context,
-                    '/about'
-                  );
+                onPressed: () {
+                  Navigator.pushNamed(context, '/about');
                 },
-                child: const Text('About', textScaleFactor: 1.2,),
+                child: const Text(
+                  'About',
+                  textScaleFactor: 1.2,
+                ),
               ),
               const Expanded(flex: 1, child: SizedBox.shrink())
             ],
@@ -98,7 +82,7 @@ class StartPageState extends State<StartPage> {
 
   void _search(String movieTitle) {
     // check that the title is not empty and push the searchResults route. (using some jargon :)
-    if(movieTitle != ''){
+    if (movieTitle != '') {
       Navigator.pushNamed(
         context,
         '/searchResult',

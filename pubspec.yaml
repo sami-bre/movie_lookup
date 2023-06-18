@@ -66,23 +66,24 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - me_before_you.jpg
-    - cloverfield_paradox.jpg
-    - despicable_me.jpg
-    - get_out.jpg
-    - home.jpg
-    - interstellar.jpg
-    - iron_man_2.jpg
-    - lord_of_the_rings.jpg
-    - the_dictator.jpg
-    - the_interview.jpg
-    - the_social_network.jpg
-    - game_of_thrones.jpg
-    - hacksaw_ridge.jpg
-    - spongebob.jpg
-    - die_in_the_west.jpg
-    - war_room.jpg
-    - logo.png
+    - assets/
+    # - me_before_you.jpg
+    # - cloverfield_paradox.jpg
+    # - despicable_me.jpg
+    # - get_out.jpg
+    # - home.jpg
+    # - interstellar.jpg
+    # - iron_man_2.jpg
+    # - lord_of_the_rings.jpg
+    # - the_dictator.jpg
+    # - the_interview.jpg
+    # - the_social_network.jpg
+    # - game_of_thrones.jpg
+    # - hacksaw_ridge.jpg
+    # - spongebob.jpg
+    # - die_in_the_west.jpg
+    # - war_room.jpg
+    # - logo.png
     - assets/illustrations/network_problem.gif
     - assets/illustrations/nothing_found.gif
   #   - images/a_dot_ham.jpeg
