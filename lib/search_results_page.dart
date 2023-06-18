@@ -7,12 +7,12 @@ import 'dart:convert';
 
 import 'main.dart'; // this imports the api_key
 
-class SearchResultPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  State<SearchResultPage> createState() => _SearchResultPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _SearchResultPageState extends State<SearchResultPage> {
+class _HomePageState extends State<HomePage> {
   TextEditingController controller = TextEditingController();
 
   Icon visibleIcon = Icon(Icons.search);
@@ -27,11 +27,6 @@ class _SearchResultPageState extends State<SearchResultPage> {
       DeviceOrientation.landscapeRight
     ]);
 
-    // String newsHeadline = ModalRoute.of(context)!.settings.arguments as String;
-    // Future<http.Response> searchQuery = http.get(Uri.parse(
-    //     'https://newsapi.org/v2/top-headlines?country=us&access_key=$api_key&query=$controller'));
-
-// MODIFY THE URL TO INCLUDE SOMETHING LIKE "LATEST" OR "TOPNEWS"
     Future<List<News>> latestNews = HttpHelper().getLatestNews();
 
     return Scaffold(

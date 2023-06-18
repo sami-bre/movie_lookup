@@ -16,8 +16,7 @@ void main() {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       routes: {
-        // '/': (context) => StartPage(),
-        '/': (context) => SearchResultPage(),
+        '/': (context) => HomePage(),
         '/detail': (context) => DetailPage(),
       },
     ),
